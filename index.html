@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advance To Do App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <main>
+    <h1 class="main_title">MY TO DO LISTS</h1>
+
+    <h3 class="sub_title">New Task Creation</h3>
+    <div class="separator"></div>
+
+    <form id="form">
+      <div class="t_name">
+        <label for="name">Name: </label>
+        <input id="name" type="text" placeholder="Add a new task">
+      </div>
+      <div class=" t_priority">
+        <label for="priority">Priority: </label>
+        <select name="" id="priority">
+
+          <option disabled>Select One</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+
+        </select>
+      </div>
+      <div class=" t_date">
+        <label for="date">Date: </label>
+        <input type="date" name="" id="date">
+      </div>
+      <div class=" t_submit">
+        <input type="submit" name="" id="date" value="Add">
+        <!-- <button type="submit">Add</button> -->
+      </div>
+
+    </form>
+    <h3 class="sub_title">Task management</h3>
+    <div class="separator"></div>
+
+    <div class="tools">
+      <div class="search">
+        <label for="search">Search: </label>
+        <input id="search" type="text" placeholder="Search by name">
+      </div>
+      <div class="filter">
+        <label for="filter">Filter: </label>
+        <select name="" id="filter">
+
+          <option value="all">All</option>
+          <option value="complete">Complete</option>
+          <option value="incomplete">Incomplete</option>
+          <option value="today">ToDay</option>
+          <option value="high">High Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="low">Low Priority</option>
+
+        </select>
+      </div>
+      <div class="sort">
+        <label for="sort">Sort: </label>
+        <select name="" id="sort">
+
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+
+        </select>
+      </div>
+      <div class=" by_date">
+        <label for="by_date">By Date: </label>
+        <input type="date" name="" id="by_date">
+      </div>
+
+    </div>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Task Name</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>action</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr>
+          <td>0</td>
+          <td>Playing Cricket</td>
+          <td>High</td>
+          <td>Incomplete</td>
+          <td>2022-02-29</td>
+          <td>
+            <button id="delete"><i class="fas fa-trash-can"></i></button>
+            <button id="check"><i class="fas fa-check"></i></button>
+            <button id="edit"><i class="fas fa-pen"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Playing Cricket</td>
+          <td>High</td>
+          <td>Incomplete</td>
+          <td>2022-02-29</td>
+          <td>
+            <button id="delete"><i class="fas fa-trash-can"></i></button>
+            <button id="check"><i class="fas fa-check"></i></button>
+            <button id="edit"><i class="fas fa-pen"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Playing Cricket</td>
+          <td>High</td>
+          <td>Incomplete</td>
+          <td>2022-02-29</td>
+          <td>
+            <button id="delete"><i class="fas fa-trash-can"></i></button>
+            <button id="check"><i class="fas fa-check"></i></button>
+            <button id="edit"><i class="fas fa-pen"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+
+
+  <script src="./app.js"></script>
+</body>
+
+</html>
