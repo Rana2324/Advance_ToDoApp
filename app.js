@@ -34,22 +34,25 @@ form.addEventListener("submit", function (e) {
   this.reset();
 });
 
-window.onload = function () {
+window.onload = load();
+
+function load() {
+  tBody.innerHTML = "";
   let tasks = getDataFromLocalStorage();
   tasks.forEach((task, index) => {
     displayToUi(task, index + 1);
   });
-};
+}
 
 function displayToUi({ id, name, priority, status, date }, index) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
-          <td>${index}</td>
-          <td>${name}</td>
-          <td>${priority}</td>
-          <td>${status}</td>
-          <td>${date}</td>
-          <td>
+          <td id='no'>${index}</td>
+          <td id='name'>${name}</td>
+          <td id='priority'>${priority}</td>
+          <td id='status'>${status}</td>
+          <td id='date'>${date}</td>
+          <td id='action'>
             <button id="delete"><i class="fas fa-trash-can"></i></button>
             <button id="check"><i class="fas fa-check"></i></button>
             <button id="edit"><i class="fas fa-pen"></i></button>
@@ -72,3 +75,48 @@ function getDataFromLocalStorage() {
 function setDataToLocalStorage(tasks) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+/* ====================Action Section =============== */
+
+tBody.addEventListener("click", function (e) {
+  if (e.target.id == "delete") {
+    const tr = e.target.parentElement.parentElement;
+    const id = tr.dataset.id;
+    tr.remove();
+    let tasks = getDataFromLocalStorage();
+
+    tasks = tasks.filter(function (task) {
+      if (task.id !== id) {
+        return task;
+      }
+    });
+    setDataToLocalStorage(tasks);
+    load();
+  } else if (e.target.id == "check") {
+    const tr = e.target.parentElement.parentElement;
+    const id = tr.dataset.id;
+    const tds = e.target.parentElement.parentElement.children;
+    [...tds].forEach((td) => {
+      if (td.id == "status") {
+        let tasks = getDataFromLocalStorage();
+        tasks = tasks.filter(function (task) {
+          if (task.id === id) {
+            if (task.status == "incomplete") {
+              task.status = "complete";
+              td.innerText = "complete";
+            } else {
+              task.status = "incomplete";
+              td.innerText = "incomplete";
+            }
+            return task;
+          } else {
+            return task;
+          }
+        });
+        setDataToLocalStorage(tasks);
+      }
+    });
+  } else if (e.target.id == "edit") {
+    console.log("edit");
+  }
+});
