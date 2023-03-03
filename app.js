@@ -78,6 +78,7 @@ function setDataToLocalStorage(tasks) {
 
 /* ====================Action Section =============== */
 
+/* =======delete section===== */
 tBody.addEventListener("click", function (e) {
   if (e.target.id == "delete") {
     const tr = e.target.parentElement.parentElement;
@@ -92,6 +93,8 @@ tBody.addEventListener("click", function (e) {
     });
     setDataToLocalStorage(tasks);
     load();
+
+    /* =======check section===== */
   } else if (e.target.id == "check") {
     const tr = e.target.parentElement.parentElement;
     const id = tr.dataset.id;
@@ -116,7 +119,106 @@ tBody.addEventListener("click", function (e) {
         setDataToLocalStorage(tasks);
       }
     });
+
+    /* =======Edit section===== */
   } else if (e.target.id == "edit") {
-    console.log("edit");
+    const tr = e.target.parentElement.parentElement;
+    const id = tr.dataset.id;
+    const tds = tr.children;
+    //name section
+    let nameTd;
+    let newNameField;
+
+    //priority section
+    let priorityTd;
+    let prioritySelect;
+    //date section
+    let dateTd;
+    let dateInputField;
+
+    //action section
+    let preButton;
+    let actionTd;
+
+    [...tds].forEach((td) => {
+      if (td.id == "name") {
+        nameTd = td;
+        const preName = td.innerHTML;
+        td.innerText = "";
+        newNameField = document.createElement("input");
+        newNameField.type = "text";
+        newNameField.value = preName;
+        td.appendChild(newNameField);
+      } else if (td.id == "priority") {
+        priorityTd = td;
+
+        const prePriority = td.innerHTML;
+        td.innerText = "";
+        prioritySelect = document.createElement("select");
+        prioritySelect.innerHTML = `
+          <option disabled>Select One</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+
+        
+        `;
+
+        if (prePriority === "high") {
+          prioritySelect.selectedIndex = 1;
+        } else if (prePriority === "medium") {
+          prioritySelect.selectedIndex = 2;
+        } else if (prePriority === "low") {
+          prioritySelect.selectedIndex = 3;
+        }
+
+        td.appendChild(prioritySelect);
+      } else if (td.id == "date") {
+        dateTd = td;
+        const preDate = td.textContent;
+        td.innerHTML = "";
+        dateInputField = document.createElement("input");
+        dateInputField.type = "date";
+        dateInputField.value = preDate;
+        td.appendChild(dateInputField);
+      } else if (td.id == "action") {
+        actionTd = td;
+        preButton = td.innerHTML;
+        td.innerHTML = "";
+        const saveBtn = document.createElement("button");
+        saveBtn.innerHTML = "<i class='fas fa-sd-card'></i>";
+        saveBtn.addEventListener("click", function () {
+          //name
+          const newName = newNameField.value;
+          nameTd.innerHTML = newName;
+          //priority
+
+          const newPriority = prioritySelect.value;
+          priorityTd.innerHTML = newPriority;
+
+          //date
+          const newDate = dateInputField.value;
+          dateTd.innerHTML = newDate;
+
+          //button
+          actionTd.innerHTML = preButton;
+          //save modified data localstorage
+          let tasks = getDataFromLocalStorage();
+          tasks = tasks.filter((task) => {
+            if (task.id === id) {
+              task.name = newName;
+              task.priority = newPriority;
+              task.date = newDate;
+
+              return task;
+            } else {
+              return task;
+            }
+          });
+          setDataToLocalStorage(tasks);
+        });
+        td.appendChild(saveBtn);
+      }
+    });
   }
 });

@@ -25,6 +25,8 @@ main {
   text-align: center;
   position: relative;
   margin-bottom: 10px;
+  /* text-transform: uppercase; */
+  text-transform: uppercase;
 }
 .main_title::after {
   content: "";
