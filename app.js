@@ -5,6 +5,10 @@ function $(id) {
 const form = $("form");
 const date = $("date");
 const tBody = $("tbody");
+const searchField = $("search");
+const filterField = $("filter");
+const sortField = $("sort");
+const byDate = $("by_date");
 const today = new Date().toISOString().slice(0, 10);
 date.value = today;
 
@@ -219,6 +223,151 @@ tBody.addEventListener("click", function (e) {
         });
         td.appendChild(saveBtn);
       }
+    });
+  }
+});
+
+/* search section */
+searchField.addEventListener("input", function (e) {
+  tBody.innerHTML = "";
+  byDate.value = "";
+  const searchTerm = this.value;
+  const tasks = getDataFromLocalStorage();
+  let no = 0;
+  tasks.forEach((task) => {
+    if (task.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      ++no;
+      displayToUi(task, 0);
+    }
+  });
+});
+
+/* filter section */
+
+filterField.addEventListener("change", function (e) {
+  filterField.selectedIndex;
+  byDate.value = "";
+  searchField.value = "";
+  tBody.innerHTML = "";
+  const filterTerm = this.value;
+  const tasks = getDataFromLocalStorage();
+
+  switch (filterTerm) {
+    case "all":
+      tasks.forEach((task, i) => {
+        displayToUi(task, i + 1);
+      });
+      break;
+    case "complete":
+      let no1 = 0;
+      tasks.forEach((task, i) => {
+        if (task.status === "complete") {
+          ++no1;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+    case "incomplete":
+      let no2 = 0;
+      tasks.forEach((task, i) => {
+        if (task.status === "incomplete") {
+          ++no2;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+    case "today":
+      let no3 = 0;
+      tasks.forEach((task, i) => {
+        if (task.date === today) {
+          ++no3;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+    case "high":
+      let no4 = 0;
+      tasks.forEach((task, i) => {
+        if (task.priority === "high") {
+          ++no4;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+    case "medium":
+      let no5 = 0;
+      tasks.forEach((task, i) => {
+        if (task.priority === "medium") {
+          ++no5;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+    case "low":
+      let no6 = 0;
+      tasks.forEach((task, i) => {
+        if (task.priority === "low") {
+          ++no6;
+          displayToUi(task, i + 1);
+        }
+      });
+      break;
+  }
+});
+/* sorting section */
+
+sortField.addEventListener("change", function (e) {
+  tBody.innerHTML = "";
+  filterField.selectedIndex = 0;
+  searchField.value = "";
+  const sortTerm = this.value;
+  const tasks = getDataFromLocalStorage();
+
+  if (sortTerm === "newest") {
+    tasks.sort((a, b) => {
+      if (new Date(a.date) > new Date(b.date)) {
+        return -1;
+      } else if (new Date(a.date) < new Date(b.date)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  } else {
+    tasks.sort((a, b) => {
+      if (new Date(a.date) > new Date(b.date)) {
+        return 1;
+      } else if (new Date(a.date) < new Date(b.date)) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  tasks.forEach((task, i) => {
+    displayToUi(task, i + 1);
+  });
+});
+/* date section */
+byDate.addEventListener("change", function (e) {
+  const selectDate = this.value;
+
+  tBody.innerHTML = "";
+  searchField.value = "";
+
+  filterField.selectedIndex = 0;
+  let tasks = getDataFromLocalStorage();
+  if (selectDate) {
+    let count = 0;
+    tasks.forEach((task) => {
+      if (task.date === selectDate) {
+        ++count;
+        displayToUi(task, count);
+      }
+    });
+  } else {
+    tasks.forEach((task, i) => {
+      displayToUi(task, i + 1);
     });
   }
 });
