@@ -141,6 +141,8 @@ button i {
   padding: 0 15px;
   align-items: center;
   display: none;
+  margin-top: 20px;
+  margin: 15px 0;
 }
 #bulk_dlt {
   padding: 5px 10px;
@@ -154,4 +156,34 @@ button i {
   background: red;
   color: aliceblue;
   cursor: pointer;
+}
+.edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 8px;
+  border: 1px solid gray;
+}
+
+#bulk_priority,
+#bulk_status,
+#edit_inp,
+#edit_sel {
+  padding: 6px 10px;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+.action_group {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+}
+#edit_input {
+  flex: 1;
+  border: none;
+  outline: none;
+}
+#edit_sel {
+  border: none;
+  border-left: 2px solid black;
 }

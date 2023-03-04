@@ -9,8 +9,63 @@ const searchField = $("search");
 const filterField = $("filter");
 const sortField = $("sort");
 const byDate = $("by_date");
+const bulkPriority = $("bulk_priority");
+const bulkStatus = $("bulk_status");
+const editInput = $("edit_input");
+const editSel = $("edit_sel");
 const today = new Date().toISOString().slice(0, 10);
 date.value = today;
+let selectedTask = [];
+
+editSel.onchange = function (e) {
+  if (this.value == "name") {
+    editInput.type = "text";
+    editInput.value = "";
+  } else {
+    editInput.type = "date";
+    editInput.value = "";
+  }
+};
+editInput.oninput = function (e) {
+  const modifiedValue = this.value;
+  let tasks = getDataFromLocalStorage();
+  if (this.type == "text") {
+    selectedTask.forEach((tr) => {
+      const id = tr.dataset.id;
+      [...tr.children].forEach((td) => {
+        if (td.id == "name") {
+          td.innerHTML = modifiedValue;
+        }
+      });
+      tasks.filter((task) => {
+        if (task.id == id) {
+          task.name = modifiedValue;
+          return task;
+        } else {
+          return task;
+        }
+      });
+    });
+  } else {
+    selectedTask.forEach((tr) => {
+      const id = tr.dataset.id;
+      [...tr.children].forEach((td) => {
+        if (td.id == "date") {
+          td.innerHTML = modifiedValue;
+        }
+      });
+      tasks.filter((task) => {
+        if (task.id == id) {
+          task.date = modifiedValue;
+          return task;
+        } else {
+          return task;
+        }
+      });
+    });
+    setDataToLocalStorage(tasks);
+  }
+};
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -28,14 +83,16 @@ form.addEventListener("submit", function (e) {
       fromData[element.name] = element.value;
     }
   });
-  if (isValid) fromData.status = "incomplete";
-  fromData.id = uuidv4();
-  const tasks = getDataFromLocalStorage();
-  displayToUi(fromData, tasks.length + 1);
-  tasks.push(fromData);
-  setDataToLocalStorage(tasks);
-
+  if (isValid) {
+    fromData.status = "incomplete";
+    fromData.id = uuidv4();
+    const tasks = getDataFromLocalStorage();
+    displayToUi(fromData, tasks.length + 1);
+    tasks.push(fromData);
+    setDataToLocalStorage(tasks);
+  }
   this.reset();
+  $("date").value = today;
 });
 
 window.onload = load();
@@ -47,7 +104,62 @@ function load() {
     displayToUi(task, index + 1);
   });
 }
-let selectedTask = [];
+
+bulkStatus.onchange = function (e) {
+  const selected = this.value;
+  let tasks = getDataFromLocalStorage();
+  selectedTask.forEach((tr) => {
+    const id = tr.dataset.id;
+    [...tr.children].forEach((td) => {
+      if (td.id == "status") {
+        td.innerHTML = selected;
+      }
+    });
+    tasks.filter((task) => {
+      if (task.id == id) {
+        task.status = selected;
+        return task;
+      } else {
+        return task;
+      }
+    });
+    setDataToLocalStorage(tasks);
+  });
+};
+
+bulkPriority.addEventListener("change", function (e) {
+  const selected = this.value;
+  let tasks = getDataFromLocalStorage();
+  selectedTask.forEach((tr) => {
+    const id = tr.dataset.id;
+    [...tr.children].forEach((td) => {
+      if (td.id == "priority") {
+        td.innerHTML = selected;
+      }
+    });
+    tasks.filter((task) => {
+      if (task.id == id) {
+        task.priority = selected;
+        return task;
+      } else {
+        return task;
+      }
+    });
+    setDataToLocalStorage(tasks);
+  });
+});
+
+$("bulk_dlt").addEventListener("click", function (e) {
+  let tasks = getDataFromLocalStorage();
+  selectedTask.forEach((tr) => {
+    const id = tr.dataset.id;
+    tasks = tasks.filter((task) => task.id !== id);
+
+    tr.remove();
+  });
+  setDataToLocalStorage(tasks);
+});
+
 function selectFunc(e) {
   const tr = e.target.parentElement.parentElement;
   const id = tr.dataset.id;
@@ -61,6 +173,23 @@ function selectFunc(e) {
     bulkActionHandler();
   }
 }
+
+document.querySelector("#dismiss").addEventListener("click", function (e) {
+  bulkPriority.selectedIndex = 0;
+  bulkStatus.selectedIndex = 0;
+  editInput.type = "text";
+  editInput.value = "";
+  editSel.selectedIndex = 0;
+  const checkBoxes = document.querySelectorAll(".checkbox");
+  [...checkBoxes].forEach((box) => {
+    box.checked = false;
+  });
+  $("all_select").checked = false;
+
+  selectedTask = [];
+  bulkActionHandler();
+});
+
 $("all_select").addEventListener("change", function (e) {
   const isChecked = e.target.checked;
   const checkBoxes = document.querySelectorAll(".checkbox");

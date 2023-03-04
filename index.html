@@ -86,6 +86,33 @@
     <div id="bulk_action" class="bulh_action">
       <div class="action_group">
         <button id="bulk_dlt">Delete</button>
+        <select name="priority" id="bulk_priority">
+
+          <option disabled selected>--change priority--</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+
+        </select>
+        <select name="status" id="bulk_status">
+
+          <option disabled selected>--change status--</option>
+          <option value="complete">complete</option>
+          <option value="incomplete">incomplete</option>
+
+
+        </select>
+        <div class="edit">
+          <input type="text" placeholder="modify the name" id="edit_input">
+          <select id="edit_sel">
+
+
+            <option value="name">Name</option>
+            <option value="date">Date</option>
+
+
+          </select>
+        </div>
       </div>
       <button id="dismiss">X</button>
 
