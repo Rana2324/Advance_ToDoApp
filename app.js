@@ -47,10 +47,57 @@ function load() {
     displayToUi(task, index + 1);
   });
 }
+let selectedTask = [];
+function selectFunc(e) {
+  const tr = e.target.parentElement.parentElement;
+  const id = tr.dataset.id;
+  const isChecked = e.target.checked;
+  if (isChecked) {
+    selectedTask.push(tr);
+    bulkActionHandler();
+  } else {
+    const index = selectedTask.findIndex((task) => tr.dataset.id === id);
+    selectedTask.splice(index, 1);
+    bulkActionHandler();
+  }
+}
+$("all_select").addEventListener("change", function (e) {
+  const isChecked = e.target.checked;
+  const checkBoxes = document.querySelectorAll(".checkbox");
+  selectedTask = [];
+  if (isChecked) {
+    [...checkBoxes].forEach((box) => {
+      const tr = box.parentElement.parentElement;
+      selectedTask.push(tr);
+      box.checked = true;
+      bulkActionHandler();
+    });
+  } else {
+    [...checkBoxes].forEach((box) => {
+      box.checked = false;
+      bulkActionHandler();
+    });
+  }
+});
+
+function bulkActionHandler(e) {
+  if (selectedTask.length) {
+    $("bulk_action").style.display = "flex";
+  } else {
+    $("bulk_action").style.display = "none";
+  }
+}
 
 function displayToUi({ id, name, priority, status, date }, index) {
   const tr = document.createElement("tr");
+
+  const checkBox = document.createElement("input");
+  checkBox.type = "checkbox";
+  checkBox.className = "checkbox";
+  checkBox.addEventListener("change", selectFunc);
+
   tr.innerHTML = `
+          <td id='check'></td>
           <td id='no'>${index}</td>
           <td id='name'>${name}</td>
           <td id='priority'>${priority}</td>
@@ -64,6 +111,7 @@ function displayToUi({ id, name, priority, status, date }, index) {
   
   `;
   tr.dataset.id = id;
+  tr.firstElementChild.appendChild(checkBox);
   tBody.appendChild(tr);
 }
 

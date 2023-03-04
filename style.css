@@ -93,9 +93,7 @@ main {
   justify-content: space-between;
   gap: 20px;
 }
-table {
-  margin-top: 25px;
-}
+
 table,
 thead,
 tbody,
@@ -133,4 +131,27 @@ button i {
   pointer-events: none;
   font-size: 20px;
   color: orange;
+}
+#bulk_action {
+  width: 100%;
+  justify-content: space-between;
+  height: 40px;
+  background: white;
+  color: black;
+  padding: 0 15px;
+  align-items: center;
+  display: none;
+}
+#bulk_dlt {
+  padding: 5px 10px;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+#dismiss {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: red;
+  color: aliceblue;
+  cursor: pointer;
 }
